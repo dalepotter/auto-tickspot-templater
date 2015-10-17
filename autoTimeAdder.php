@@ -4,6 +4,8 @@
 	ini_set('display_startup_errors',1);
 	error_reporting(-1);
 
+// Include the configuration file
+	require 'config.php';
 
 // Set available projects/tasks
 	$taskIDs = array(
@@ -43,11 +45,9 @@
 	// Get the timestamp for the week that the entries are to be added on
 		$timestampWeekStart = strtotime($weekBeginning);
 
-	// Set tickspot API details
-		$apiAuthToken = "YOUR API TOKEN";	// Get this from the Tickspot API - will likely be alphanumeric
+	// Set extra details for the tickspot API call
 		$apiEndpoint = "https://www.tickspot.com/26859/api/v2/entries.json";
-		$apiUserAgent = "AutoTimeAdder (YOUR EMAIL HERE)";
-		$tickspotUserId = "YOUR USER ID"; // - will likely be a large integer
+		$apiUserAgent = "AutoTimeAdder (" . userEmail . ")";
 
 	// Loop over each $weeklyTask and send an API request (via POST) to add 
 		foreach($weeklyTasks as $task){
@@ -57,7 +57,7 @@
 								'hours' => $task['hours'],
 								'notes' => $task['notes'],
 								'task_id' => $task['taskId'],
-								'user_id' => $tickspotUserId,
+								'user_id' => tickspotUserId,
 							 );
 
 			// Encode data to a JSON format string
@@ -66,7 +66,7 @@
 			// Set the headers for the request
 				$headers = array(
 				    "Content-Type: application/json",
-				    "Authorization: Token token=" . $apiAuthToken,
+				    "Authorization: Token token=" . tickspotApiKey,
 				    "User-Agent: " . $apiUserAgent
 				);
 
